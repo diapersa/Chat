@@ -8,6 +8,7 @@ import com.google.cloud.dialogflow.v2.DetectIntentResponse;
 import com.google.cloud.dialogflow.v2.QueryInput;
 import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import static android.content.ContentValues.TAG;
 
@@ -44,6 +45,10 @@ public class RequestJavaV2Task extends AsyncTask<Void, Void, DetectIntentRespons
 
   @Override
   protected void onPostExecute(DetectIntentResponse response) {
-    mInterface.callback(response);
+    try {
+      mInterface.callback(response);
+    } catch (InvalidProtocolBufferException e) {
+      e.printStackTrace();
+    }
   }
 }

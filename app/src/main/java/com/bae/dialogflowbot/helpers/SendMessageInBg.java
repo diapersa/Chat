@@ -8,6 +8,7 @@ import com.google.cloud.dialogflow.v2.DetectIntentResponse;
 import com.google.cloud.dialogflow.v2.QueryInput;
 import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 public class SendMessageInBg extends AsyncTask<Void, Void, DetectIntentResponse> {
 
@@ -45,6 +46,10 @@ public class SendMessageInBg extends AsyncTask<Void, Void, DetectIntentResponse>
   @Override
   protected void onPostExecute(DetectIntentResponse response) {
     //handle return response here
-    botReply.callback(response);
+    try {
+      botReply.callback(response);
+    } catch (InvalidProtocolBufferException e) {
+      e.printStackTrace();
+    }
   }
 }

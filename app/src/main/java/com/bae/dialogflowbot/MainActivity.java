@@ -22,9 +22,16 @@ import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.SessionsSettings;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.common.collect.Lists;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
+
+
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -98,10 +105,21 @@ public class MainActivity extends AppCompatActivity implements BotReply {
   }
 
   @Override
-  public void callback(DetectIntentResponse returnResponse) {
+  public void callback(DetectIntentResponse returnResponse) throws InvalidProtocolBufferException {
      if(returnResponse!=null) {
        String botReply = returnResponse.getQueryResult().getFulfillmentText();
-       if(!botReply.isEmpty()){
+       returnResponse.getQueryResult().getFulfillmentMessages(1).getPayload().getFieldsMap();
+       JsonFormat.Printer json = JsonFormat.printer().includingDefaultValueFields();
+       String str = json.print(returnResponse.getQueryResult().getFulfillmentMessagesOrBuilder(1));
+       try{
+
+         JSONObject obj = new JSONObject(str);
+         Log.d("My App", obj.get("payload").toString());
+
+       } catch (Throwable t){
+         Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+       }
+        if(!botReply.isEmpty()){
          messageList.add(new Message(botReply, true));
          chatAdapter.notifyDataSetChanged();
          Objects.requireNonNull(chatView.getLayoutManager()).scrollToPosition(messageList.size() - 1);
