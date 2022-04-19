@@ -3,5 +3,7 @@
   <color name="colorPrimary">#6200EE</color>
   <color name="colorPrimaryDark">#3700B3</color>
   <color name="colorAccent">#03DAC5</color>
-  <color name="blue">#94cbe0</color>
+  <color name="oxford_blue">#0B1B32</color>;
+  <color name="blue">#72ACAC</color>
+  <color name="yellow">#E9C46A</color>
 </resources>
